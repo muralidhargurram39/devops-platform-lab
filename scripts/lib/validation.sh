@@ -1,37 +1,86 @@
 #!/usr/bin/env bash
+#
+###############################################################################
+# DevOps Lab Platform
+# File    : validation.sh
+# Purpose : Platform environment validation
+###############################################################################
 
-VALIDATION_LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+###############################################################################
+# Source Guard
+###############################################################################
 
-source "${VALIDATION_LIB_DIR}/colors.sh"
+[[ -n "${DEVOPS_VALIDATION_LOADED:-}" ]] && return 0
+readonly DEVOPS_VALIDATION_LOADED=1
 
-check_command() {
+###############################################################################
+# Public API
+###############################################################################
 
-    command -v "$1" >/dev/null 2>&1 || {
-        error "$1 is not installed."
-        exit 1
-    }
+validate_environment() {
+
+    check_docker_installed
+    check_docker_running
+    check_compose_available
+    check_compose_file
+
 }
 
-check_docker() {
+###############################################################################
+# Docker
+###############################################################################
 
-    docker info >/dev/null 2>&1 || {
-        error "Docker is not running."
-        exit 1
-    }
+check_docker_installed() {
+
+    docker_available || die "Docker is not installed."
+
 }
 
-check_compose() {
+check_docker_running() {
 
-    docker compose version >/dev/null 2>&1 || {
-        error "Docker Compose is unavailable."
-        exit 1
-    }
+    docker_running || die "Docker daemon is not running."
+
 }
 
-check_kind_network() {
+###############################################################################
+# Docker Compose
+###############################################################################
 
-    docker network inspect kind >/dev/null 2>&1 || {
-        error "Kind Docker network not found."
-        exit 1
-    }
+check_compose_available() {
+
+    compose_available || die "Docker Compose is unavailable."
+
+}
+
+###############################################################################
+# Compose File
+###############################################################################
+
+check_compose_file() {
+
+    [[ -f "${PROJECT_ROOT}/${COMPOSE_FILE}" ]] \
+        || die "Compose file not found: ${COMPOSE_FILE}"
+
+}
+
+###############################################################################
+# Future Validation Hooks
+###############################################################################
+
+check_required_ports() {
+
+    return 0
+
+}
+
+check_disk_space() {
+
+    return 0
+
+}
+
+check_memory() {
+
+    return 0
+
 }

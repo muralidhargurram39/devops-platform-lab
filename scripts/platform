@@ -17,34 +17,16 @@
 set -Eeuo pipefail
 
 ###############################################################################
-# Resolve project paths
+# Resolve Runtime Environment
 ###############################################################################
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+SCRIPT_DIR="$(
+    cd "$(dirname "${BASH_SOURCE[0]}")" &&
+    pwd
+)"
 
-COMMANDS_DIR="${SCRIPT_DIR}/commands"
-LIB_DIR="${SCRIPT_DIR}/lib"
+source "${SCRIPT_DIR}/lib/bootstrap.sh"
 
-###############################################################################
-# Load shared libraries
-###############################################################################
-
-source "${LIB_DIR}/colors.sh"
-source "${LIB_DIR}/constants.sh"
-source "${LIB_DIR}/common.sh"
-source "${LIB_DIR}/ui.sh"
-source "${LIB_DIR}/services.sh"
-
-###############################################################################
-# Load command modules
-###############################################################################
-
-source "${COMMANDS_DIR}/start.sh"
-source "${COMMANDS_DIR}/stop.sh"
-source "${COMMANDS_DIR}/restart.sh"
-source "${COMMANDS_DIR}/status.sh"
-source "${COMMANDS_DIR}/health.sh"
 
 ###############################################################################
 # Display Help
@@ -54,7 +36,7 @@ show_help() {
 
 cat << EOF
 
-DevOps Lab Platform CLI
+${CLI_NAME} v${CLI_VERSION}
 
 Usage:
     platform <command>
@@ -106,7 +88,7 @@ case "$COMMAND" in
         ;;
 
     *)
-        echo "Unknown command: $COMMAND"
+        print_error "Unknown command: $COMMAND"
         echo
         show_help
         exit 1

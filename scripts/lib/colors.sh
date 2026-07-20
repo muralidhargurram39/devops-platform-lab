@@ -6,6 +6,13 @@
 # Purpose : ANSI color definitions used throughout the CLI.
 # =============================================================================
 
+###############################################################################
+# Source Guard
+###############################################################################
+
+[[ -n "${DEVOPS_COLORS_LOADED:-}" ]] && return 0
+readonly DEVOPS_COLORS_LOADED=1
+
 # Reset
 readonly COLOR_RESET='\033[0m'
 

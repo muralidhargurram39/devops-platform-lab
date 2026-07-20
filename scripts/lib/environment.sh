@@ -2,73 +2,42 @@
 #
 ###############################################################################
 # DevOps Lab Platform
-# File    : compose.sh
-# Purpose : Docker Compose SDK
+# File    : environment.sh
+# Purpose : Runtime environment configuration
 ###############################################################################
 
 ###############################################################################
 # Source Guard
 ###############################################################################
 
-[[ -n "${DEVOPS_COMPOSE_LOADED:-}" ]] && return 0
-readonly DEVOPS_COMPOSE_LOADED=1
+[[ -n "${DEVOPS_ENVIRONMENT_LOADED:-}" ]] && return 0
+readonly DEVOPS_ENVIRONMENT_LOADED=1
 
 ###############################################################################
-# Private
+# Runtime Paths
 ###############################################################################
 
-_compose() {
+readonly SCRIPT_DIR="$(
+    cd "$(dirname "${BASH_SOURCE[1]}")/.." && pwd
+)"
 
-    docker compose "$@"
+readonly PROJECT_ROOT="$(
+    cd "${SCRIPT_DIR}/.." && pwd
+)"
 
-}
+readonly LIB_DIR="${SCRIPT_DIR}/lib"
+readonly COMMANDS_DIR="${SCRIPT_DIR}/commands"
+
+readonly DOCS_DIR="${PROJECT_ROOT}/docs"
+readonly TESTS_DIR="${PROJECT_ROOT}/tests"
+readonly LOGS_DIR="${PROJECT_ROOT}/logs"
 
 ###############################################################################
-# Public API
+# Runtime Initialization
 ###############################################################################
 
-compose_available() {
+init_environment() {
 
-    _compose version >/dev/null 2>&1
-
-}
-
-compose_up() {
-
-    _compose up -d
-
-}
-
-compose_down() {
-
-    _compose down
-
-}
-
-compose_restart() {
-
-    _compose restart
-
-}
-
-compose_ps() {
-
-    _compose ps
-
-}
-
-compose_logs() {
-
-    _compose logs "$@"
-
-}
-
-compose_exec() {
-
-    local service="$1"
-
-    shift
-
-    _compose exec "$service" "$@"
+    mkdir -p "${LOGS_DIR}"
 
 }
