@@ -1,43 +1,60 @@
-version: "3.9"
+# ============================================================================
+# DevOps Lab Platform
+# Docker Compose Configuration
+#
+# This platform provides the shared DevOps services used by all application
+# repositories.
+#
+# Services:
+# - Jenkins
+# - SonarQube
+# - PostgreSQL (SonarQube)
+# - Nexus Repository
+# - Tomcat
+# ============================================================================
 
 services:
 
+  # --------------------------------------------------------------------------
+  # Jenkins
+  # --------------------------------------------------------------------------
   jenkins:
     build:
       context: ./jenkins
       dockerfile: Dockerfile
 
     image: custom-jenkins:lts
-    container_name: jenkins
 
     restart: unless-stopped
 
     group_add:
       - "1001"
 
+    environment:
+      DOCKER_BUILDKIT: "1"
+
     ports:
       - "8080:8080"
       - "50000:50000"
-
-    environment:
-      DOCKER_BUILDKIT: "1"
 
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - ./jenkins/kube:/var/jenkins_home/.kube:ro
 
-    networks:
-      - cicd-network
-      - kind
-
     depends_on:
       - sonarqube
       - nexus
 
+    networks:
+      - devops-platform
+      - kind
+
+  # --------------------------------------------------------------------------
+  # SonarQube
+  # --------------------------------------------------------------------------
   sonarqube:
     image: sonarqube:lts-community
-    container_name: sonarqube
 
     restart: unless-stopped
 
@@ -58,11 +75,13 @@ services:
       - sonar-postgres
 
     networks:
-      - cicd-network
+      - devops-platform
 
+  # --------------------------------------------------------------------------
+  # PostgreSQL (SonarQube Database)
+  # --------------------------------------------------------------------------
   sonar-postgres:
     image: postgres:16
-    container_name: sonar-postgres
 
     restart: unless-stopped
 
@@ -74,12 +93,20 @@ services:
     volumes:
       - sonar_postgres_data:/var/lib/postgresql/data
 
-    networks:
-      - cicd-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sonar"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
+    networks:
+      - devops-platform
+
+  # --------------------------------------------------------------------------
+  # Nexus Repository
+  # --------------------------------------------------------------------------
   nexus:
     image: sonatype/nexus3
-    container_name: nexus
 
     restart: unless-stopped
 
@@ -92,11 +119,13 @@ services:
       - nexus_data:/nexus-data
 
     networks:
-      - cicd-network
+      - devops-platform
 
+  # --------------------------------------------------------------------------
+  # Tomcat
+  # --------------------------------------------------------------------------
   tomcat:
     image: tomcat:10.1-jdk17
-    container_name: tomcat
 
     restart: unless-stopped
 
@@ -107,19 +136,37 @@ services:
       - tomcat_webapps:/usr/local/tomcat/webapps
 
     networks:
-      - cicd-network
+      - devops-platform
+
+
+# ============================================================================
+# Persistent Volumes
+# ============================================================================
 
 volumes:
+
   jenkins_home:
+
   sonar_postgres_data:
+
   sonarqube_data:
+
   sonarqube_logs:
+
   sonarqube_extensions:
+
   nexus_data:
+
   tomcat_webapps:
 
+
+# ============================================================================
+# Networks
+# ============================================================================
+
 networks:
-  cicd-network:
+
+  devops-platform:
     driver: bridge
 
   kind:
