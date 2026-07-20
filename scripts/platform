@@ -82,6 +82,10 @@ case "$COMMAND" in
     health)
         health_platform
         ;;
+    
+    doctor)
+       command_doctor
+       ;;
 
     help|-h|--help)
         show_help

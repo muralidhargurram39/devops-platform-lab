@@ -58,6 +58,7 @@ platform_health() {
     print_header "Platform Health"
 
     health_check_platform
+    health_print_summary
 }
 
 platform_urls() {
@@ -95,6 +96,16 @@ platform_summary() {
     echo
 
     print_success "Platform started successfully."
+
+}
+
+platform_doctor() {
+
+    print_header "Platform Doctor"
+
+    doctor_check_platform
+
+    doctor_print_summary
 
 }
 

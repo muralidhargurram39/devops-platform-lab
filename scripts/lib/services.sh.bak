@@ -26,28 +26,6 @@ readonly PLATFORM_SERVICES=(
 )
 
 ###############################################################################
-# Service Registry
-###############################################################################
-
-declare -Ar SERVICE_CONTAINER_NAMES=(
-    [jenkins]="devops-lab-platform-jenkins-1"
-    [sonarqube]="devops-lab-platform-sonarqube-1"
-    [sonar-postgres]="devops-lab-platform-sonar-postgres-1"
-    [nexus]="devops-lab-platform-nexus-1"
-    [tomcat]="devops-lab-platform-tomcat-1"
-)
-
-declare -Ar SERVICE_DISPLAY_NAMES=(
-    [jenkins]="Jenkins"
-    [sonarqube]="SonarQube"
-    [sonar-postgres]="PostgreSQL"
-    [nexus]="Nexus Repository"
-    [tomcat]="Apache Tomcat"
-)
-
-
-
-###############################################################################
 # Service Ports
 ###############################################################################
 
@@ -57,14 +35,6 @@ declare -Ar SERVICE_PORTS=(
     [sonar-postgres]=5432
     [nexus]=8081
     [tomcat]=9090
-)
-
-declare -Ar SERVICE_HEALTH_URLS=(
-    [jenkins]="http://localhost:8080/login"
-    [sonarqube]="http://localhost:9000/api/system/status"
-    [sonar-postgres]=""
-    [nexus]="http://localhost:8081"
-    [tomcat]="http://localhost:9090"
 )
 
 ###############################################################################
@@ -86,7 +56,7 @@ service_container_name() {
 
     local service="$1"
 
-    printf "%s\n" "${SERVICE_CONTAINER_NAMES[$service]}"
+    printf "%s-%s-1" "$PROJECT_NAME" "$service"
 
 }
 
@@ -94,7 +64,7 @@ service_port() {
 
     local service="$1"
 
-    printf "%s\n" "${SERVICE_PORTS[$service]}"
+    printf "%s" "${SERVICE_PORTS[$service]}"
 
 }
 
@@ -102,7 +72,7 @@ service_url() {
 
     local service="$1"
 
-    printf "%s\n" "${SERVICE_URLS[$service]:-}"
+    printf "%s" "${SERVICE_URLS[$service]:-}"
 
 }
 
@@ -120,21 +90,5 @@ service_exists() {
 list_services() {
 
     printf "%s\n" "${PLATFORM_SERVICES[@]}"
-
-}
-
-service_display_name() {
-
-    local service="$1"
-
-    printf "%s\n" "${SERVICE_DISPLAY_NAMES[$service]}"
-
-}
-
-service_health_url() {
-
-    local service="$1"
-
-    printf "%s\n" "${SERVICE_HEALTH_URLS[$service]}"
 
 }

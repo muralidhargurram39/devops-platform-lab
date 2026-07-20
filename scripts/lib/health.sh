@@ -3,7 +3,7 @@
 ###############################################################################
 # DevOps Lab Platform
 # File    : health.sh
-# Purpose : Platform Health Engine
+# Purpose : Platform health checks
 ###############################################################################
 
 ###############################################################################
@@ -16,18 +16,6 @@ readonly DEVOPS_HEALTH_LOADED=1
 ###############################################################################
 # Private Helpers
 ###############################################################################
-
-_check_container_exists() {
-
-    local container="$1"
-
-    if container_exists "$container"; then
-        printf "yes"
-    else
-        printf "no"
-    fi
-
-}
 
 _check_container_running() {
 
@@ -45,19 +33,54 @@ _check_container_health() {
 
     local container="$1"
 
-    container_health "$container"
+    if ! container_exists "$container"; then
+        printf "N/A"
+        return
+    fi
+
+    local health
+
+    health="$(docker inspect \
+        --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}n/a{{end}}' \
+        "$container" 2>/dev/null)"
+
+    printf "%s" "$health"
 
 }
 
 _check_port() {
 
-    printf "N/A"
+    local service="$1"
+    local port
+
+    port="$(service_port "$service")"
+
+    if [[ -z "$port" ]]; then
+        printf "N/A"
+        return
+    fi
+
+    if tcp_port_open localhost "$port"; then
+        printf "open"
+    else
+        printf "closed"
+    fi
 
 }
 
 _check_http() {
 
-    printf "N/A"
+    local service="$1"
+    local url
+
+    url="$(service_health_url "$service")"
+
+    if [[ -z "$url" ]]; then
+        printf "N/A"
+        return
+    fi
+
+    http_status "$url"
 
 }
 
@@ -68,35 +91,44 @@ _check_http() {
 health_check_service() {
 
     local service="$1"
-
     local container
-
-    container="$(service_container_name "$service")"
 
     local status
     local health
+    local port
+    local http
+
+    container="$(service_container_name "$service")"
 
     status="$(_check_container_running "$container")"
     health="$(_check_container_health "$container")"
+    port="$(_check_port "$service")"
+    http="$(_check_http "$service")"
 
-    printf "%s|%s|%s\n" \
+    printf "%s|%s|%s|%s|%s\n" \
         "$service" \
         "$status" \
-        "$health"
+        "$health" \
+        "$port" \
+        "$http"
 
 }
 
 health_check_platform() {
 
-    printf "%-18s %-12s %-12s\n" \
+    printf "%-18s %-12s %-12s %-10s %-8s\n" \
         "SERVICE" \
         "STATUS" \
-        "HEALTH"
+        "HEALTH" \
+        "PORT" \
+        "HTTP"
 
-    printf "%-18s %-12s %-12s\n" \
+    printf "%-18s %-12s %-12s %-10s %-8s\n" \
         "-------" \
         "------" \
-        "------"
+        "------" \
+        "----" \
+        "----"
 
     local service
 
@@ -106,18 +138,24 @@ health_check_platform() {
         local name
         local status
         local health
+        local port
+        local http
 
         result="$(health_check_service "$service")"
 
         IFS='|' read -r \
             name \
             status \
-            health <<< "$result"
+            health \
+            port \
+            http <<< "$result"
 
-        printf "%-18s %-12s %-12s\n" \
+        printf "%-18s %-12s %-12s %-10s %-8s\n" \
             "$name" \
             "$status" \
-            "$health"
+            "$health" \
+            "$port" \
+            "$http"
 
     done
 
@@ -125,29 +163,34 @@ health_check_platform() {
 
 health_print_summary() {
 
-    local total="${#PLATFORM_SERVICES[@]}"
+    local total=0
     local running=0
 
     local service
 
     for service in "${PLATFORM_SERVICES[@]}"; do
 
-        local container
+        ((++total))
 
+        local container
         container="$(service_container_name "$service")"
 
         if container_running "$container"; then
-            ((running++))
+            ((++running))
         fi
 
     done
 
-    echo
+    printf "\n"
 
     if [[ "$running" -eq "$total" ]]; then
-        print_success "Overall Platform Health : HEALTHY (${running}/${total})"
+        printf "✔ Overall Platform Health : HEALTHY (%d/%d)\n" \
+            "$running" \
+            "$total"
     else
-        print_warning "Overall Platform Health : DEGRADED (${running}/${total})"
+        printf "⚠ Overall Platform Health : DEGRADED (%d/%d)\n" \
+            "$running" \
+            "$total"
     fi
 
 }
