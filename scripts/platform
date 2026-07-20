@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+###############################################################################
+# DevOps Lab Platform CLI
+#
+# Main entry point for the DevOps Lab Platform.
+#
+# Responsibilities:
+#   - Load shared libraries
+#   - Parse command-line arguments
+#   - Dispatch commands
+#   - Display help
+#
+# This file MUST NOT contain platform business logic.
+###############################################################################
+
+set -Eeuo pipefail
+
+###############################################################################
+# Resolve project paths
+###############################################################################
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+COMMANDS_DIR="${SCRIPT_DIR}/commands"
+LIB_DIR="${SCRIPT_DIR}/lib"
+
+###############################################################################
+# Load shared libraries
+###############################################################################
+
+source "${LIB_DIR}/colors.sh"
+source "${LIB_DIR}/constants.sh"
+source "${LIB_DIR}/common.sh"
+source "${LIB_DIR}/ui.sh"
+source "${LIB_DIR}/services.sh"
+
+###############################################################################
+# Load command modules
+###############################################################################
+
+source "${COMMANDS_DIR}/start.sh"
+source "${COMMANDS_DIR}/stop.sh"
+source "${COMMANDS_DIR}/restart.sh"
+source "${COMMANDS_DIR}/status.sh"
+source "${COMMANDS_DIR}/health.sh"
+
+###############################################################################
+# Display Help
+###############################################################################
+
+show_help() {
+
+cat << EOF
+
+DevOps Lab Platform CLI
+
+Usage:
+    platform <command>
+
+Core Commands
+    start       Start platform
+    stop        Stop platform
+    restart     Restart platform
+    status      Show platform status
+    health      Perform health checks
+
+General
+    help        Show this help
+
+EOF
+
+}
+
+###############################################################################
+# Dispatcher
+###############################################################################
+
+COMMAND="${1:-help}"
+
+case "$COMMAND" in
+
+    start)
+        start_platform
+        ;;
+
+    stop)
+        stop_platform
+        ;;
+
+    restart)
+        restart_platform
+        ;;
+
+    status)
+        status_platform
+        ;;
+
+    health)
+        health_platform
+        ;;
+
+    help|-h|--help)
+        show_help
+        ;;
+
+    *)
+        echo "Unknown command: $COMMAND"
+        echo
+        show_help
+        exit 1
+        ;;
+
+esac
