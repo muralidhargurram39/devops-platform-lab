@@ -19,6 +19,7 @@ readonly PLATFORM_VERSION="1.0.0"
 ###############################################################################
 
 readonly DEFAULT_COMPOSE_FILE="docker-compose.yml"
+readonly COMPOSE_FILE="${DEFAULT_COMPOSE_FILE}"
 readonly DEFAULT_NETWORK="devops-lab"
 
 ###############################################################################

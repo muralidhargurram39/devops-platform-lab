@@ -29,6 +29,10 @@ backup_create() {
 
     snapshot_metadata "$snapshot_dir"
 
+    snapshot_copy_compose "$snapshot_dir"
+
+    snapshot_copy_env "$snapshot_dir"
+
     ui_snapshot_created "$snapshot_dir"
 
 }

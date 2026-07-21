@@ -54,6 +54,24 @@ EOF
 
 }
 
+snapshot_copy_compose() {
+
+    local snapshot_dir="$1"
+
+    cp "${PROJECT_ROOT}/${COMPOSE_FILE}" \
+       "${snapshot_dir}/docker-compose.yml"
+}
+
+snapshot_copy_env() {
+
+    local snapshot_dir="$1"
+
+    if [[ -f "$PROJECT_ROOT/.env" ]]; then
+        cp "$PROJECT_ROOT/.env" "${snapshot_dir}/.env"
+    fi
+
+}
+
 ###############################################################################
 # Private API
 ###############################################################################
