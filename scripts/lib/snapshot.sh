@@ -80,6 +80,45 @@ snapshot_volume_directory() {
 
 }
 
+snapshot_exists() {
+
+    local snapshot="$1"
+
+    [[ -d "${BACKUP_ROOT}/${snapshot}" ]]
+
+}
+
+snapshot_path() {
+
+    local snapshot="$1"
+
+    printf "%s/%s\n" \
+        "$BACKUP_ROOT" \
+        "$snapshot"
+
+}
+
+snapshot_validate() {
+
+    local snapshot="$1"
+    local snapshot_dir
+
+    snapshot_dir="$(snapshot_path "$snapshot")"
+
+    [[ -d "$snapshot_dir" ]] \
+        || die "Snapshot not found: ${snapshot}"
+
+    [[ -f "${snapshot_dir}/metadata.json" ]] \
+        || die "metadata.json missing"
+
+    [[ -f "${snapshot_dir}/docker-compose.yml" ]] \
+        || die "docker-compose.yml missing"
+
+    [[ -d "${snapshot_dir}/volumes" ]] \
+        || die "volumes directory missing"
+
+}
+
 ###############################################################################
 # Private API
 ###############################################################################
