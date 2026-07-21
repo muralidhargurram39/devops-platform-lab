@@ -19,16 +19,12 @@ readonly DEVOPS_SNAPSHOT_LOADED=1
 
 snapshot_create() {
 
-    local snapshot_dir
-
-    snapshot_dir="$(_snapshot_directory)"
+    local snapshot_dir="$1"
 
     mkdir -p \
-        "${snapshot_dir}/volumes" \
         "${snapshot_dir}/logs" \
-        "${snapshot_dir}/manifests"
-
-    echo "$snapshot_dir"
+        "${snapshot_dir}/manifests" \
+        "${snapshot_dir}/volumes"
 }
 
 snapshot_list() {
@@ -44,7 +40,18 @@ snapshot_delete() {
 }
 
 snapshot_metadata() {
-    :
+
+    local snapshot_dir="$1"
+
+    cat > "${snapshot_dir}/metadata.json" <<EOF
+{
+  "platform": "${PLATFORM_NAME}",
+  "version": "${PLATFORM_VERSION}",
+  "snapshot": "$(_snapshot_name "$snapshot_dir")",
+  "created": "$(_snapshot_created_at)"
+}
+EOF
+
 }
 
 ###############################################################################
@@ -56,7 +63,24 @@ _snapshot_timestamp() {
 }
 
 _snapshot_directory() {
+
+    local snapshot_name
+
+    snapshot_name="$(_snapshot_timestamp)"
+
     printf "%s/%s\n" \
         "$BACKUP_ROOT" \
-        "$(_snapshot_timestamp)"
+        "$snapshot_name"
+}
+
+_snapshot_name() {
+
+    basename "$1"
+
+}
+
+_snapshot_created_at() {
+
+    date -u +"%Y-%m-%dT%H:%M:%SZ"
+
 }

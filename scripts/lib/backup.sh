@@ -19,13 +19,18 @@ readonly DEVOPS_BACKUP_LOADED=1
 
 backup_create() {
 
-    local snapshot
+    validate_backup_directory
 
-    snapshot="$(snapshot_create)"
+    local snapshot_dir
 
-    print_success "Snapshot created"
+    snapshot_dir="$(_snapshot_directory)"
 
-    echo "$snapshot"
+    snapshot_create "$snapshot_dir"
+
+    snapshot_metadata "$snapshot_dir"
+
+    ui_snapshot_created "$snapshot_dir"
+
 }
 
 backup_list() {

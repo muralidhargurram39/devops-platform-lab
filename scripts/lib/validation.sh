@@ -133,3 +133,11 @@ validate_platform() {
     check_memory
 
 }
+
+validate_backup_directory() {
+
+    mkdir -p "$BACKUP_ROOT" || {
+        log_error "Unable to create backup directory: $BACKUP_ROOT"
+        return 1
+    }
+}

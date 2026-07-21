@@ -245,3 +245,12 @@ print_info() {
         "${COLOR_RESET}"
 
 }
+
+ui_snapshot_created() {
+
+    local snapshot_dir="$1"
+
+    print_success "Snapshot created"
+
+    printf "Location : %s\n" "$snapshot_dir"
+}
