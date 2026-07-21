@@ -31,6 +31,7 @@ init_environment
 # Load Core Libraries
 ###############################################################################
 
+source "${LIB_DIR}/config.sh"
 source "${LIB_DIR}/colors.sh"
 source "${LIB_DIR}/constants.sh"
 source "${LIB_DIR}/logger.sh"
@@ -61,7 +62,7 @@ source "${LIB_DIR}/health.sh"
 source "${LIB_DIR}/doctor.sh"
 source "${LIB_DIR}/logs.sh"
 source "$LIB_DIR/metrics.sh"
-
+source "$LIB_DIR/lifecycle.sh"
 ###############################################################################
 # Load Platform API
 ###############################################################################

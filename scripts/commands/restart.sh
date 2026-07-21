@@ -4,13 +4,8 @@
 # Restart Command
 ###############################################################################
 
-###############################################################################
-# Source Guard
-###############################################################################
+command_restart() {
 
-[[ -n "${DEVOPS_COMMAND_RESTART_LOADED:-}" ]] && return 0
-readonly DEVOPS_COMMAND_RESTART_LOADED=1
+    platform_restart "$@"
 
-restart_platform() {
-    platform_restart
 }

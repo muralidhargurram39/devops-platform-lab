@@ -16,11 +16,8 @@ metrics_show_service() {
     local service="${1:-}"
 
     if ! service_exists "$service"; then
-
         log_error "Unknown service: $service"
-
         return 1
-
     fi
 
     local container
@@ -41,12 +38,10 @@ metrics_show_service() {
 
     if ! container_running "$container"; then
 
-        print_header "$(service_display_name "$service")"
-
-        printf "%-15s : %s\n" "Container" "$container"
-        printf "%-15s : %s\n" "Status" "Stopped"
-
-        diagnostics_print_separator
+        print_service_header \
+            "$(service_display_name "$service")" \
+            "$container" \
+            "Stopped"
 
         printf "Metrics unavailable.\n\n"
 
@@ -70,19 +65,21 @@ metrics_show_service() {
         <<< "$metrics"
 
     ###########################################################################
-    # Display
+    # Header
     ###########################################################################
 
-    print_header "$(service_display_name "$service")"
+    print_service_header \
+        "$(service_display_name "$service")" \
+        "$container" \
+        "Running"
 
-    printf "%-15s : %s\n" "Container" "$container"
-    printf "%-15s : %s\n" "Status" "Running"
-
-    diagnostics_print_separator
+    ###########################################################################
+    # Display Metrics
+    ###########################################################################
 
     printf "%-15s : %s\n" "CPU" "$cpu"
     printf "%-15s : %s\n" "Memory" "$memory"
-    printf "%-15s : %s\n" "Memory %%" "$memory_percent"
+    printf "%-15s : %s\n" "Memory %" "$memory_percent"
     printf "%-15s : %s\n" "Network" "$network"
     printf "%-15s : %s\n" "Block I/O" "$block_io"
     printf "%-15s : %s\n" "PIDs" "$pids"

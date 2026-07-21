@@ -37,18 +37,6 @@ platform_stop() {
     print_success "Platform stopped successfully."
 }
 
-platform_restart() {
-
-    print_header "Restarting DevOps Lab Platform"
-
-    platform_stop
-
-    printf "\n"
-
-    platform_start
-
-}
-
 platform_status() {
 
     print_header "Platform Status"
@@ -152,6 +140,26 @@ platform_metrics() {
     else
 
         metrics_show_service "$service"
+
+    fi
+
+}
+
+###############################################################################
+# Platform Restart
+###############################################################################
+
+platform_restart() {
+
+    local service="${1:-}"
+
+    if [[ -z "$service" || "$service" == "all" ]]; then
+
+        restart_all_services
+
+    else
+
+        restart_service "$service"
 
     fi
 

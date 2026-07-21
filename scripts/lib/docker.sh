@@ -189,3 +189,31 @@ _docker_stats() {
         "$container"
 
 }
+
+###############################################################################
+# Container Lifecycle
+###############################################################################
+
+container_restart() {
+
+    local container="$1"
+
+    docker restart "$container"
+
+}
+
+container_start() {
+
+    local container="$1"
+
+    docker start "$container"
+
+}
+
+container_stop() {
+
+    local container="$1"
+
+    docker stop "$container"
+
+}

@@ -34,12 +34,10 @@ logs_show_service() {
 
     if ! container_running "$container"; then
 
-        print_header "$(service_display_name "$service")"
-
-        printf "%-15s : %s\n" "Container" "$container"
-        printf "%-15s : %s\n" "Status" "Stopped"
-
-        diagnostics_print_separator
+        print_service_header \
+            "$(service_display_name "$service")" \
+            "$container" \
+            "Stopped"
 
         printf "No logs available.\n\n"
 
@@ -73,13 +71,11 @@ logs_show_service() {
     # Header
     ###########################################################################
 
-    print_header "$(service_display_name "$service")"
-
-    printf "%-15s : %s\n" "Container" "$container"
-    printf "%-15s : %s\n" "Status" "Running"
-    printf "%-15s : %s\n" "Mode" "$mode"
-
-    diagnostics_print_separator
+    print_service_header_with_mode \
+        "$(service_display_name "$service")" \
+        "$container" \
+        "Running" \
+        "$mode"
 
     ###########################################################################
     # Display Logs
