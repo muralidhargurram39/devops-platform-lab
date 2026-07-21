@@ -104,8 +104,6 @@ restore_snapshot() {
         return 0
     }
 
-    echo
-
-    print_info "Restore engine not implemented"
+   restore_execute "$snapshot"
 
 }

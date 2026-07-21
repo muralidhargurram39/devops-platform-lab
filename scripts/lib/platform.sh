@@ -179,9 +179,25 @@ platform_backup_volumes() {
 
 }
 
-platform_restore() {
+restore_execute() {
 
     local snapshot="$1"
+
+    echo
+
+    print_info "Stopping platform..."
+
+    platform_stop
+
+    echo
+
+    print_info "Restore engine not implemented"
+
+}
+
+platform_restore() {
+
+    local snapshot="${1:-}"
 
     restore_snapshot "$snapshot"
 
