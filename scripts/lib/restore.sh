@@ -75,6 +75,80 @@ restore_select_snapshot() {
         "${snapshots[@]}"
 }
 
+restore_execute() {
+
+    local snapshot="$1"
+
+    echo
+
+    restore_stop_platform
+
+    restore_volumes "$snapshot"
+
+    restore_configuration "$snapshot"
+
+    restore_start_platform
+
+    restore_verify
+
+}
+
+###############################################################################
+# Workflow Stages
+###############################################################################
+
+restore_stop_platform() {
+
+    print_info "Stopping platform..."
+
+    platform_stop
+
+}
+
+###############################################################################
+
+restore_volumes() {
+
+    local snapshot="$1"
+
+    print_info "Restoring Docker volumes..."
+
+    print_info "Volume restore not implemented"
+
+}
+
+###############################################################################
+
+restore_configuration() {
+
+    local snapshot="$1"
+
+    print_info "Restoring platform configuration..."
+
+    :
+
+}
+
+###############################################################################
+
+restore_start_platform() {
+
+    print_info "Starting platform..."
+
+    :
+
+}
+
+###############################################################################
+
+restore_verify() {
+
+    print_info "Verifying platform..."
+
+    :
+
+}
+
 restore_snapshot() {
 
     local snapshot="${1:-}"
