@@ -103,3 +103,85 @@ volume_exists() {
     docker volume inspect "$1" >/dev/null 2>&1
 
 }
+
+container_logs() {
+
+    local container="$1"
+
+    _docker_logs \
+        "$container" \
+        --tail "${DEFAULT_LOG_TAIL}"
+
+}
+
+container_logs_tail() {
+
+    local container="$1"
+    local lines="$2"
+
+    _docker_logs \
+        "$container" \
+        --tail "$lines"
+
+}
+
+container_logs_follow() {
+
+    local container="$1"
+
+    _docker_logs \
+        "$container" \
+        --follow
+
+}
+
+container_logs_since() {
+
+    local container="$1"
+    local since="$2"
+
+    _docker_logs \
+        "$container" \
+        --since "$since"
+
+}
+
+###############################################################################
+# Container Metrics
+###############################################################################
+
+container_stats() {
+
+    local container="$1"
+
+    _docker_stats "$container"
+
+}
+
+###############################################################################
+# Private Helpers
+###############################################################################
+
+_docker_logs() {
+
+    local container="$1"
+    shift
+
+    docker logs "$@" "$container"
+
+}
+
+###############################################################################
+# Private Helpers
+###############################################################################
+
+_docker_stats() {
+
+    local container="$1"
+
+    docker stats \
+        --no-stream \
+        --format "{{.CPUPerc}}|{{.MemUsage}}|{{.NetIO}}" \
+        "$container"
+
+}
