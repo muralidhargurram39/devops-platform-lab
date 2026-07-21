@@ -37,6 +37,7 @@ source "${LIB_DIR}/constants.sh"
 source "${LIB_DIR}/logger.sh"
 source "${LIB_DIR}/common.sh"
 source "${LIB_DIR}/ui.sh"
+source "${LIB_DIR}/menu.sh"
 
 ###############################################################################
 # Load SDK Libraries

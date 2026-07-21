@@ -28,7 +28,24 @@ snapshot_create() {
 }
 
 snapshot_list() {
-    :
+
+    find "$BACKUP_ROOT" \
+        -mindepth 1 \
+        -maxdepth 1 \
+        -type d \
+        -printf "%f\n" \
+        | sort
+
+}
+
+snapshot_created_at() {
+
+    local snapshot="$1"
+
+    grep '"created"' \
+        "$(snapshot_path "$snapshot")/metadata.json" \
+        | cut -d'"' -f4
+
 }
 
 snapshot_exists() {
@@ -101,21 +118,59 @@ snapshot_path() {
 snapshot_validate() {
 
     local snapshot="$1"
-    local snapshot_dir
 
-    snapshot_dir="$(snapshot_path "$snapshot")"
+    snapshot_is_valid "$snapshot" ||
+        die "Invalid snapshot: ${snapshot}"
 
-    [[ -d "$snapshot_dir" ]] \
-        || die "Snapshot not found: ${snapshot}"
+}
 
-    [[ -f "${snapshot_dir}/metadata.json" ]] \
-        || die "metadata.json missing"
+snapshot_list_archives() {
 
-    [[ -f "${snapshot_dir}/docker-compose.yml" ]] \
-        || die "docker-compose.yml missing"
+    local snapshot="$1"
 
-    [[ -d "${snapshot_dir}/volumes" ]] \
-        || die "volumes directory missing"
+    find \
+        "$(snapshot_path "$snapshot")/volumes" \
+        -maxdepth 1 \
+        -type f \
+        -name "*.tar.gz" \
+        -printf "%f\n" \
+        | sort
+
+}
+
+snapshot_read_metadata() {
+
+    local snapshot="$1"
+
+    cat "$(snapshot_path "$snapshot")/metadata.json"
+
+}
+
+snapshot_is_valid() {
+
+    local snapshot="$1"
+    local dir
+
+    dir="$(snapshot_path "$snapshot")"
+
+    [[ -d "$dir" ]] &&
+    [[ -f "${dir}/metadata.json" ]] &&
+    [[ -f "${dir}/docker-compose.yml" ]] &&
+    [[ -d "${dir}/volumes" ]]
+
+}
+
+snapshot_list_valid() {
+
+    local snapshot
+
+    while IFS= read -r snapshot; do
+
+        if snapshot_is_valid "$snapshot"; then
+            printf "%s\n" "$snapshot"
+        fi
+
+    done < <(snapshot_list)
 
 }
 

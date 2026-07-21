@@ -4,11 +4,5 @@
 
 command_restore() {
 
-    local snapshot="$1"
-
-    [[ -n "$snapshot" ]] \
-        || die "Snapshot name required"
-
-    platform_restore "$snapshot"
-
+    platform_restore "${1:-}"
 }
