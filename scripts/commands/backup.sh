@@ -5,6 +5,7 @@ command_backup() {
     local action="${1:-create}"
 
     case "$action" in
+
         create)
             platform_backup
             ;;
@@ -13,9 +14,12 @@ command_backup() {
             platform_snapshots
             ;;
 
+        list-volumes)
+            platform_backup_volumes
+            ;;
+
         *)
-            print_error "Unknown backup command: $action"
-            return 1
+            die "Unknown backup action: ${action}"
             ;;
     esac
 }

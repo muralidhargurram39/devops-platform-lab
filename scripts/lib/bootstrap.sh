@@ -65,6 +65,8 @@ source "$LIB_DIR/metrics.sh"
 source "$LIB_DIR/lifecycle.sh"
 source "$LIB_DIR/snapshot.sh"
 source "$LIB_DIR/backup.sh"
+source "${LIB_DIR}/docker_provider.sh"
+
 ###############################################################################
 # Load Platform API
 ###############################################################################

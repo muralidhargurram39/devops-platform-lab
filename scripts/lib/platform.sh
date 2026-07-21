@@ -172,3 +172,9 @@ platform_backup() {
 platform_snapshots() {
     backup_list
 }
+
+platform_backup_volumes() {
+
+    backup_list_volumes
+
+}

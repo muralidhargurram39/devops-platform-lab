@@ -40,3 +40,9 @@ backup_create() {
 backup_list() {
     echo "Backup list not implemented"
 }
+
+backup_list_volumes() {
+
+    docker_list_volumes
+
+}
