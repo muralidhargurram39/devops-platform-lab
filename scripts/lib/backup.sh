@@ -43,6 +43,6 @@ backup_list() {
 
 backup_list_volumes() {
 
-    docker_list_volumes
+    docker_list_platform_volumes
 
 }
