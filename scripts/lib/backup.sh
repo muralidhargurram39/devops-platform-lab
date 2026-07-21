@@ -18,7 +18,14 @@ readonly DEVOPS_BACKUP_LOADED=1
 ###############################################################################
 
 backup_create() {
-    echo "Backup engine not implemented"
+
+    local snapshot
+
+    snapshot="$(snapshot_create)"
+
+    print_success "Snapshot created"
+
+    echo "$snapshot"
 }
 
 backup_list() {
