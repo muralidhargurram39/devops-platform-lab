@@ -41,9 +41,12 @@ platform_restart() {
 
     print_header "Restarting DevOps Lab Platform"
 
-    compose_restart
+    platform_stop
 
-    platform_summary
+    printf "\n"
+
+    platform_start
+
 }
 
 platform_status() {
@@ -106,6 +109,51 @@ platform_doctor() {
     doctor_check_platform
 
     doctor_print_summary
+
+}
+
+platform_logs() {
+
+    local service="${1:-}"
+    local tail="${2:-}"
+    local follow="${3:-false}"
+    local since="${4:-}"
+
+    if [[ -z "$service" ]]; then
+
+        logs_show_platform \
+            "$tail" \
+            "$follow" \
+            "$since"
+
+    else
+
+        logs_show_service \
+            "$service" \
+            "$tail" \
+            "$follow" \
+            "$since"
+
+    fi
+}
+
+###############################################################################
+# Platform Metrics
+###############################################################################
+
+platform_metrics() {
+
+    local service="${1:-}"
+
+    if [[ -z "$service" ]]; then
+
+        metrics_show_platform
+
+    else
+
+        metrics_show_service "$service"
+
+    fi
 
 }
 

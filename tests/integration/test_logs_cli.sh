@@ -1,77 +1,100 @@
 #!/usr/bin/env bash
 
-###############################################################################
-# Source Guard
-###############################################################################
+set -Eeuo pipefail
 
-[[ -n "${DEVOPS_BOOTSTRAP_LOADED:-}" ]] && return 0
-readonly DEVOPS_BOOTSTRAP_LOADED=1
-
-###############################################################################
-# Bootstrap Paths
-###############################################################################
-
-BOOTSTRAP_DIR="$(
+SCRIPT_DIR="$(
     cd "$(dirname "${BASH_SOURCE[0]}")" &&
     pwd
 )"
 
-LIB_DIR="$BOOTSTRAP_DIR"
-SCRIPT_DIR="$(dirname "$BOOTSTRAP_DIR")"
+PROJECT_ROOT="$(
+    cd "$SCRIPT_DIR/../.." &&
+    pwd
+)"
+
+source "$PROJECT_ROOT/tests/test_common.sh"
+
+PLATFORM="$PROJECT_ROOT/scripts/platform"
 
 ###############################################################################
-# Initialize Environment
+# Default Logs
 ###############################################################################
 
-source "${LIB_DIR}/environment.sh"
+"$PLATFORM" logs >/dev/null
 
-init_environment
-
-###############################################################################
-# Load Core Libraries
-###############################################################################
-
-source "${LIB_DIR}/colors.sh"
-source "${LIB_DIR}/constants.sh"
-source "${LIB_DIR}/logger.sh"
-source "${LIB_DIR}/common.sh"
-source "${LIB_DIR}/ui.sh"
+assert_equals \
+    0 \
+    $? \
+    "CLI logs"
 
 ###############################################################################
-# Load SDK Libraries
+# Jenkins Logs
 ###############################################################################
 
-source "${LIB_DIR}/services.sh"
-source "${LIB_DIR}/docker.sh"
-source "${LIB_DIR}/compose.sh"
-source "${LIB_DIR}/network.sh"
-source "${LIB_DIR}/validation.sh"
+"$PLATFORM" logs jenkins >/dev/null
+
+assert_equals \
+    0 \
+    $? \
+    "CLI logs jenkins"
 
 ###############################################################################
-# Load Framework Libraries
+# Tail
 ###############################################################################
 
-source "${LIB_DIR}/diagnostics.sh"
+"$PLATFORM" logs --tail 100 >/dev/null
+
+assert_equals \
+    0 \
+    $? \
+    "CLI logs --tail"
 
 ###############################################################################
-# Load Engines
+# Since
 ###############################################################################
 
-source "${LIB_DIR}/health.sh"
-source "${LIB_DIR}/doctor.sh"
-source "${LIB_DIR}/logs.sh"
-source "$LIB_DIR/metrics.sh"
+"$PLATFORM" logs --since 30m >/dev/null
+
+assert_equals \
+    0 \
+    $? \
+    "CLI logs --since"
 
 ###############################################################################
-# Load Platform API
+# Invalid Service
 ###############################################################################
 
-source "${LIB_DIR}/platform.sh"
+"$PLATFORM" logs invalid >/dev/null 2>&1
+
+assert_equals \
+    1 \
+    $? \
+    "CLI invalid service"
 
 ###############################################################################
-# Load Commands
+# Invalid Tail
 ###############################################################################
 
-for file in "${COMMANDS_DIR}"/*.sh; do
-    source "$file"
-done
+"$PLATFORM" logs --tail abc >/dev/null 2>&1
+
+assert_equals \
+    1 \
+    $? \
+    "CLI invalid tail"
+
+###############################################################################
+# Invalid Since
+###############################################################################
+
+"$PLATFORM" logs --since xyz >/dev/null 2>&1
+
+assert_equals \
+    1 \
+    $? \
+    "CLI invalid since"
+
+###############################################################################
+# Summary
+###############################################################################
+
+print_summary

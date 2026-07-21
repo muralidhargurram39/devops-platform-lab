@@ -27,29 +27,45 @@ SCRIPT_DIR="$(
 
 source "${SCRIPT_DIR}/lib/bootstrap.sh"
 
-
 ###############################################################################
 # Display Help
 ###############################################################################
 
 show_help() {
 
-cat << EOF
+cat <<EOF
 
 ${CLI_NAME} v${CLI_VERSION}
 
 Usage:
-    platform <command>
+    platform <command> [options]
 
 Core Commands
     start       Start platform
     stop        Stop platform
     restart     Restart platform
     status      Show platform status
+
+Operations
     health      Perform health checks
+    doctor      Diagnose platform issues
+    logs        View platform logs
+    metrics     View platform resource metrics
+    urls        Display service URLs
 
 General
     help        Show this help
+
+Examples
+
+    platform health
+    platform doctor
+    platform logs
+    platform logs jenkins
+    platform logs --tail 100
+    platform metrics
+    platform metrics jenkins
+    platform urls
 
 EOF
 
@@ -61,40 +77,68 @@ EOF
 
 COMMAND="${1:-help}"
 
+shift || true
+
 case "$COMMAND" in
 
     start)
+
         start_platform
         ;;
 
     stop)
+
         stop_platform
         ;;
 
     restart)
+
         restart_platform
         ;;
 
     status)
+
         status_platform
         ;;
 
     health)
-        health_platform
+
+        health_platform "$@"
         ;;
-    
+
     doctor)
-       command_doctor
-       ;;
+
+        command_doctor "$@"
+        ;;
+
+    urls)
+
+        command_urls "$@"
+        ;;
+
+    logs)
+
+        command_logs "$@"
+        ;;
+
+    metrics)
+
+        command_metrics "$@"
+        ;;
 
     help|-h|--help)
+
         show_help
         ;;
 
     *)
-        print_error "Unknown command: $COMMAND"
+
+        log_error "Unknown command: $COMMAND"
+
         echo
+
         show_help
+
         exit 1
         ;;
 

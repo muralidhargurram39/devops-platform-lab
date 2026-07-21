@@ -56,3 +56,9 @@ readonly PORT_JENKINS=8080
 readonly PORT_SONARQUBE=9000
 readonly PORT_NEXUS=8081
 readonly PORT_TOMCAT=8082
+
+###############################################################################
+# Log Defaults
+###############################################################################
+
+readonly DEFAULT_LOG_TAIL=50

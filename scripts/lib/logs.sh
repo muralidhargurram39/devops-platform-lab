@@ -4,34 +4,27 @@
 # Source Guard
 ###############################################################################
 
-[[ -n "${DEVOPS_METRICS_LOADED:-}" ]] && return 0
-readonly DEVOPS_METRICS_LOADED=1
+[[ -n "${DEVOPS_LOGS_LOADED:-}" ]] && return 0
+readonly DEVOPS_LOGS_LOADED=1
 
 ###############################################################################
 # Public API
 ###############################################################################
 
-metrics_show_service() {
+logs_show_service() {
 
     local service="${1:-}"
+    local tail="${2:-}"
+    local follow="${3:-false}"
+    local since="${4:-}"
 
     if ! service_exists "$service"; then
-
         log_error "Unknown service: $service"
-
         return 1
-
     fi
 
     local container
-    local metrics
-
-    local cpu
-    local memory
-    local memory_percent
-    local network
-    local block_io
-    local pids
+    local mode
 
     container="$(service_container_name "$service")"
 
@@ -48,44 +41,71 @@ metrics_show_service() {
 
         diagnostics_print_separator
 
-        printf "Metrics unavailable.\n\n"
+        printf "No logs available.\n\n"
 
         return 1
 
     fi
 
     ###########################################################################
-    # Collect Metrics
+    # Determine Display Mode
     ###########################################################################
 
-    metrics="$(container_stats "$container")"
+    if [[ "$follow" == "true" ]]; then
 
-    IFS='|' read -r \
-        cpu \
-        memory \
-        memory_percent \
-        network \
-        block_io \
-        pids \
-        <<< "$metrics"
+        mode="Follow"
+
+    elif [[ -n "$since" ]]; then
+
+        mode="Since (${since})"
+
+    elif [[ -n "$tail" ]]; then
+
+        mode="Tail (${tail} lines)"
+
+    else
+
+        mode="Default (${DEFAULT_LOG_TAIL} lines)"
+
+    fi
 
     ###########################################################################
-    # Display
+    # Header
     ###########################################################################
 
     print_header "$(service_display_name "$service")"
 
     printf "%-15s : %s\n" "Container" "$container"
     printf "%-15s : %s\n" "Status" "Running"
+    printf "%-15s : %s\n" "Mode" "$mode"
 
     diagnostics_print_separator
 
-    printf "%-15s : %s\n" "CPU" "$cpu"
-    printf "%-15s : %s\n" "Memory" "$memory"
-    printf "%-15s : %s\n" "Memory %%" "$memory_percent"
-    printf "%-15s : %s\n" "Network" "$network"
-    printf "%-15s : %s\n" "Block I/O" "$block_io"
-    printf "%-15s : %s\n" "PIDs" "$pids"
+    ###########################################################################
+    # Display Logs
+    ###########################################################################
+
+    if [[ "$follow" == "true" ]]; then
+
+        container_logs_follow "$container"
+
+    elif [[ -n "$since" ]]; then
+
+        container_logs_since \
+            "$container" \
+            "$since"
+
+    elif [[ -n "$tail" ]]; then
+
+        container_logs_tail \
+            "$container" \
+            "$tail"
+
+    else
+
+        container_logs "$container"
+
+    fi
 
     printf "\n"
 
@@ -95,21 +115,29 @@ metrics_show_service() {
 
     print_engine_footer \
         "$(service_display_name "$service")" \
-        "Metrics"
+        "Logs"
 
 }
 
 ###############################################################################
-# Platform Metrics
+# Platform Logs
 ###############################################################################
 
-metrics_show_platform() {
+logs_show_platform() {
+
+    local tail="${1:-}"
+    local follow="${2:-false}"
+    local since="${3:-}"
 
     local service
 
     for service in "${PLATFORM_SERVICES[@]}"; do
 
-        metrics_show_service "$service"
+        logs_show_service \
+            "$service" \
+            "$tail" \
+            "$follow" \
+            "$since"
 
     done
 
