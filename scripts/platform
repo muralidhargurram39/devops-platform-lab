@@ -135,6 +135,10 @@ case "$COMMAND" in
     	
     	command_backup "$@"
     	;;
+   restore)
+
+       command_restore "$@"
+       ;;
 
     help|-h|--help)
 

@@ -59,6 +59,7 @@ backup_export_volumes() {
     local volume
     local index=0
     local total
+    local -a volumes
 
     volume_dir="$(snapshot_volume_directory "$snapshot_dir")"
 
@@ -80,6 +81,11 @@ backup_export_volumes() {
         archive="${volume_dir}/${volume}.tar.gz"
 
         if [[ ! -s "$archive" ]]; then
+            log_error "Archive is empty: ${archive}"
+            return 1
+        fi
+
+        if ! archive_verify "$archive"; then
             log_error "Archive verification failed: ${archive}"
             return 1
         fi

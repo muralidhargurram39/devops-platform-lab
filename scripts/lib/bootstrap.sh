@@ -66,6 +66,7 @@ source "$LIB_DIR/lifecycle.sh"
 source "$LIB_DIR/snapshot.sh"
 source "$LIB_DIR/backup.sh"
 source "${LIB_DIR}/docker_provider.sh"
+source "${LIB_DIR}/restore.sh"
 
 ###############################################################################
 # Load Platform API

@@ -178,3 +178,11 @@ platform_backup_volumes() {
     backup_list_volumes
 
 }
+
+platform_restore() {
+
+    local snapshot="$1"
+
+    restore_snapshot "$snapshot"
+
+}
