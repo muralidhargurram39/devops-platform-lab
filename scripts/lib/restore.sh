@@ -113,7 +113,9 @@ restore_volumes() {
 
     print_info "Restoring Docker volumes..."
 
-    print_info "Volume restore not implemented"
+    docker_restore_all_volumes "$snapshot"
+
+    print_success "Docker volumes restored."
 
 }
 

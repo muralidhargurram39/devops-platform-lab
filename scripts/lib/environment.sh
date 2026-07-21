@@ -27,7 +27,7 @@ readonly PROJECT_ROOT="$(
 
 readonly LIB_DIR="${SCRIPT_DIR}/lib"
 readonly COMMANDS_DIR="${SCRIPT_DIR}/commands"
-
+readonly PROVIDERS_DIR="${SCRIPT_DIR}/providers"
 readonly DOCS_DIR="${PROJECT_ROOT}/docs"
 readonly TESTS_DIR="${PROJECT_ROOT}/tests"
 readonly LOGS_DIR="${PROJECT_ROOT}/logs"

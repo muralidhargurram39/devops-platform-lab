@@ -38,7 +38,8 @@ source "${LIB_DIR}/logger.sh"
 source "${LIB_DIR}/common.sh"
 source "${LIB_DIR}/ui.sh"
 source "${LIB_DIR}/menu.sh"
-
+source "${PROVIDERS_DIR}/docker_volume_restore.sh"
+source "${PROVIDERS_DIR}/compose.sh"
 ###############################################################################
 # Load SDK Libraries
 ###############################################################################
