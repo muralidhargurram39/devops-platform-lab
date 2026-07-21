@@ -63,6 +63,8 @@ source "${LIB_DIR}/doctor.sh"
 source "${LIB_DIR}/logs.sh"
 source "$LIB_DIR/metrics.sh"
 source "$LIB_DIR/lifecycle.sh"
+source "$LIB_DIR/snapshot.sh"
+source "$LIB_DIR/backup.sh"
 ###############################################################################
 # Load Platform API
 ###############################################################################

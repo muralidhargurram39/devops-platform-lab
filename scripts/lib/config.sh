@@ -49,3 +49,11 @@ readonly ENABLE_COLORS=true
 readonly ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 readonly LOG_DIR="$ROOT_DIR/logs"
 readonly CONFIG_DIR="$ROOT_DIR/config"
+
+###############################################################################
+# Backup Configuration
+###############################################################################
+
+readonly BACKUP_ROOT="${PROJECT_ROOT}/backups"
+
+readonly SNAPSHOT_DATE_FORMAT="%Y%m%d_%H%M%S"

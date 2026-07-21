@@ -131,6 +131,10 @@ case "$COMMAND" in
 
         command_metrics "$@"
         ;;
+    backup)
+    	
+    	command_backup "$@"
+    	;;
 
     help|-h|--help)
 

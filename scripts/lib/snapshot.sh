@@ -1,20 +1,42 @@
 #!/usr/bin/env bash
 
 ###############################################################################
-# Status Command
+# DevOps Lab Platform
+# File    : snapshot.sh
+# Purpose : Snapshot Management Engine
 ###############################################################################
 
 ###############################################################################
 # Source Guard
 ###############################################################################
 
-[[ -n "${DEVOPS_COMMAND_STATUS_LOADED:-}" ]] && return 0
-readonly DEVOPS_COMMAND_STATUS_LOADED=1
+[[ -n "${DEVOPS_SNAPSHOT_LOADED:-}" ]] && return 0
+readonly DEVOPS_SNAPSHOT_LOADED=1
 
 ###############################################################################
 # Public API
 ###############################################################################
 
-command_status() {
-    platform_status "$@"
+snapshot_create() {
+    :
 }
+
+snapshot_list() {
+    :
+}
+
+snapshot_exists() {
+    :
+}
+
+snapshot_delete() {
+    :
+}
+
+snapshot_metadata() {
+    :
+}
+
+###############################################################################
+# Private API
+###############################################################################

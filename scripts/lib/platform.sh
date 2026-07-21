@@ -165,3 +165,10 @@ platform_restart() {
 
 }
 
+platform_backup() {
+    backup_create
+}
+
+platform_snapshots() {
+    backup_list
+}

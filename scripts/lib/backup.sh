@@ -1,20 +1,26 @@
 #!/usr/bin/env bash
 
 ###############################################################################
-# Status Command
+# DevOps Lab Platform
+# File    : backup.sh
+# Purpose : Backup Engine
 ###############################################################################
 
 ###############################################################################
 # Source Guard
 ###############################################################################
 
-[[ -n "${DEVOPS_COMMAND_STATUS_LOADED:-}" ]] && return 0
-readonly DEVOPS_COMMAND_STATUS_LOADED=1
+[[ -n "${DEVOPS_BACKUP_LOADED:-}" ]] && return 0
+readonly DEVOPS_BACKUP_LOADED=1
 
 ###############################################################################
 # Public API
 ###############################################################################
 
-command_status() {
-    platform_status "$@"
+backup_create() {
+    echo "Backup engine not implemented"
+}
+
+backup_list() {
+    echo "Backup list not implemented"
 }
