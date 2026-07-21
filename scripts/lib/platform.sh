@@ -21,7 +21,7 @@ platform_start() {
 
     print_header "Starting DevOps Lab Platform"
 
-    validate_environment
+    validate_platform
 
     compose_up
 
@@ -41,7 +41,7 @@ platform_status() {
 
     print_header "Platform Status"
 
-    _display_status_table
+    status_show_platform
 }
 
 platform_health() {
@@ -165,63 +165,3 @@ platform_restart() {
 
 }
 
-###############################################################################
-# Private Helpers
-###############################################################################
-
-_collect_service_status() {
-
-    local service="$1"
-
-    local container
-
-    container="$(service_container_name "$service")"
-
-    local status
-    local health
-
-    status="$(container_status "$container")"
-    health="$(container_health "$container")"
-
-    printf "%s|%s|%s\n" \
-        "$service" \
-        "$status" \
-        "$health"
-
-}
-
-###############################################################################
-
-_display_status_table() {
-
-    printf "%-18s %-12s %-12s\n" \
-        "SERVICE" \
-        "STATUS" \
-        "HEALTH"
-
-    printf "%-18s %-12s %-12s\n" \
-        "-------" \
-        "------" \
-        "------"
-
-    local service
-
-    for service in "${PLATFORM_SERVICES[@]}"; do
-
-        local result
-
-        result="$(_collect_service_status "$service")"
-
-        IFS='|' read -r \
-            service_name \
-            service_status \
-            service_health <<< "$result"
-
-        printf "%-18s %-12s %-12s\n" \
-            "$service_name" \
-            "$service_status" \
-            "$service_health"
-
-    done
-
-}

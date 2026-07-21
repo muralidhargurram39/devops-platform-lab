@@ -84,3 +84,52 @@ check_memory() {
     return 0
 
 }
+
+###############################################################################
+# Service Validation
+###############################################################################
+
+validate_service() {
+
+    local service="$1"
+
+    service_exists "$service" \
+        || die "Unknown service: $service"
+
+}
+
+###############################################################################
+# Container Validation
+###############################################################################
+
+validate_container() {
+
+    local container="$1"
+
+    container_exists "$container" \
+        || die "Container not found: $container"
+
+}
+
+validate_running_container() {
+
+    local container="$1"
+
+    container_running "$container" \
+        || die "Container is not running: $container"
+
+}
+
+###############################################################################
+# Platform Validation
+###############################################################################
+
+validate_platform() {
+
+    validate_environment
+
+    check_required_ports
+    check_disk_space
+    check_memory
+
+}

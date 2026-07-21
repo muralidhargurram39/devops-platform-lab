@@ -110,7 +110,7 @@ container_logs() {
 
     _docker_logs \
         "$container" \
-        --tail "${DEFAULT_LOG_TAIL}"
+        --tail "${DEFAULT_LOG_LINES}"
 
 }
 
