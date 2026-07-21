@@ -175,13 +175,17 @@ _docker_logs() {
 # Private Helpers
 ###############################################################################
 
+###############################################################################
+# Private Helpers
+###############################################################################
+
 _docker_stats() {
 
     local container="$1"
 
     docker stats \
         --no-stream \
-        --format "{{.CPUPerc}}|{{.MemUsage}}|{{.NetIO}}" \
+        --format "{{.CPUPerc}}|{{.MemUsage}}|{{.MemPerc}}|{{.NetIO}}|{{.BlockIO}}|{{.PIDs}}" \
         "$container"
 
 }
