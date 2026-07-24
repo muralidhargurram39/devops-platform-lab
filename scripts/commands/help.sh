@@ -15,8 +15,12 @@ Workspace Commands
     sleep
 
 Service Commands
-    start [service|all]
-    stop  [service|all]
+    start   [service|all]
+    stop    [service|all]
+    restart [service|all]
+
+Operations
+    status
 
 Utility Commands
     version

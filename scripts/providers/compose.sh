@@ -50,3 +50,56 @@ compose_service_exists() {
 
     docker compose config --services | grep -Fxq "$service"
 }
+
+compose_ps() {
+
+    docker compose ps --format json
+}
+
+compose_ps_all() {
+    docker compose ps -a --format json
+}
+
+compose_running_count() {
+    compose_ps | jq -r 'select(.State == "running") | .Service' | wc -l
+}
+
+compose_stopped_count() {
+    compose_ps_all | jq -r 'select(.State != "running") | .Service' | wc -l
+}
+
+compose_status() {
+
+    compose_ps |
+    jq -r '
+        [
+            .Service,
+            .State,
+            (if .Health == "" then "-" else .Health end)
+        ] | @tsv
+    '
+
+}
+
+compose_running_count() {
+
+    compose_ps |
+    jq -r '
+        select(.State=="running")
+        | .Service
+    ' |
+    wc -l
+
+}
+
+compose_stopped_count() {
+
+    compose_ps_all |
+    jq -r '
+        select(.State!="running")
+        | .Service
+    ' |
+    wc -l
+
+}
+
