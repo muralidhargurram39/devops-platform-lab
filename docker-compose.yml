@@ -19,11 +19,11 @@ services:
   # Jenkins
   # --------------------------------------------------------------------------
   jenkins:
+    image: custom-jenkins:lts
+
     build:
       context: ./jenkins
       dockerfile: Dockerfile
-
-    image: custom-jenkins:lts
 
     restart: unless-stopped
 
@@ -48,7 +48,6 @@ services:
 
     networks:
       - devops-platform
-      - kind
 
   # --------------------------------------------------------------------------
   # SonarQube
@@ -168,6 +167,3 @@ networks:
 
   devops-platform:
     driver: bridge
-
-  kind:
-    external: true
