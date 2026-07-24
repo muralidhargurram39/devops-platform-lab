@@ -7,6 +7,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/lib/bootstrap.sh"
 
 COMMAND="${1:-help}"
+ARG="${2:-all}"
 
 case "${COMMAND}" in
 
@@ -17,6 +18,9 @@ case "${COMMAND}" in
     help)
         platform_help
         ;;
+    start)
+        platform_start "$ARG"
+	;;
     setup)
        platform_setup
        ;;

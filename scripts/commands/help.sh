@@ -9,11 +9,15 @@ Usage:
 
     ${CLI_NAME} <command>
 
-Commands
-
+Workspace Commands
     setup
     wake
     sleep
+
+Service Commands
+    start [service|all]
+
+Utility Commands
     version
     help
         
