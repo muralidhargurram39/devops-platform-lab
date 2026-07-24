@@ -22,3 +22,15 @@ Thumbs.db
 
 # Environment
 .env
+
+# Runtime
+backups/
+Backups/
+logs/
+tmp/
+
+# Environment
+.env
+
+# macOS/Linux
+.DS_Store
