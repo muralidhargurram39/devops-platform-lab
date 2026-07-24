@@ -16,6 +16,7 @@ Workspace Commands
 
 Service Commands
     start [service|all]
+    stop  [service|all]
 
 Utility Commands
     version

@@ -21,6 +21,9 @@ case "${COMMAND}" in
     start)
         platform_start "$ARG"
 	;;
+    stop)
+       platform_stop "$ARG"
+       ;;
     setup)
        platform_setup
        ;;

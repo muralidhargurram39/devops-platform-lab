@@ -4,7 +4,7 @@ platform_wake() {
 
     info "Preparing platform..."
 
-    platform_setup
+    platform_validate
 
     if compose_project_exists; then
 

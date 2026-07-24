@@ -4,7 +4,7 @@ platform_sleep() {
 
     info "Putting platform to sleep..."
 
-    platform_setup
+    platform_validate
 
     if ! compose_project_exists; then
         warn "Platform has not been created yet."

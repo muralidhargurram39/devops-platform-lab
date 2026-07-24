@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-platform_start() {
+platform_stop() {
 
     platform_validate
 
@@ -8,13 +8,13 @@ platform_start() {
 
     require_service "$service"
 
-    info "Starting ${service}..."
+    info "Stopping ${service}..."
 
     if [[ "$service" == "all" ]]; then
-        compose_start_all
+        compose_stop_all
     else
-        compose_start_service "$service"
+        compose_stop_service "$service"
     fi
 
-    info "Start completed."
+    info "Stop completed."
 }

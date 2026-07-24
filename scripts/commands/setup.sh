@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-platform_setup() {
+platform_validate() {
 
     info "Checking Docker..."
 
@@ -23,6 +23,11 @@ platform_setup() {
     if [[ ! -f "${PROJECT_ROOT}/docker-compose.yml" ]]; then
         die "docker-compose.yml not found."
     fi
+}
+
+platform_setup() {
+
+    platform_validate
 
     mkdir -p \
         "${PROJECT_ROOT}/backups" \
