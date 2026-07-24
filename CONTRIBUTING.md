@@ -321,3 +321,7 @@ Useful resources:
 Thank you for contributing to the DevOps Lab Platform.
 
 Your contributions help improve the project for the entire community.
+
+## License
+
+By contributing to this project, you agree that your contributions will be licensed under the MIT License.
