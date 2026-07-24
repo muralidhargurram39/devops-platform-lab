@@ -20,6 +20,9 @@ case "${COMMAND}" in
     setup)
        platform_setup
        ;;
+    wake)
+       platform_wake
+       ;;
 
     *)
         error "Unknown command: ${COMMAND}"

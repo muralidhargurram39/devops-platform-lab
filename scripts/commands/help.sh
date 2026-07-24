@@ -11,10 +11,11 @@ Usage:
 
 Commands
 
+    setup
+    wake
     version
     help
-    setup
-
+        
 EOF
 
 }
