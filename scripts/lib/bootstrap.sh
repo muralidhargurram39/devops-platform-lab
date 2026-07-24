@@ -4,8 +4,15 @@ set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
+# Libraries
 source "${PROJECT_ROOT}/scripts/lib/common.sh"
 source "${PROJECT_ROOT}/scripts/lib/logger.sh"
 
+# Providers
+source "${PROJECT_ROOT}/scripts/providers/docker.sh"
+source "${PROJECT_ROOT}/scripts/providers/compose.sh"
+
+# Commands
 source "${PROJECT_ROOT}/scripts/commands/version.sh"
 source "${PROJECT_ROOT}/scripts/commands/help.sh"
+source "${PROJECT_ROOT}/scripts/commands/setup.sh"

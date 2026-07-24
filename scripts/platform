@@ -17,6 +17,9 @@ case "${COMMAND}" in
     help)
         platform_help
         ;;
+    setup)
+       platform_setup
+       ;;
 
     *)
         error "Unknown command: ${COMMAND}"

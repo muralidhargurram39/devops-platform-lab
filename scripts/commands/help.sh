@@ -13,6 +13,7 @@ Commands
 
     version
     help
+    setup
 
 EOF
 
