@@ -11,9 +11,9 @@ platform_start() {
     info "Starting ${service}..."
 
     if [[ "$service" == "all" ]]; then
-        compose_start_all
+        compose_start
     else
-        compose_start_service "$service"
+        compose_start "$service"
     fi
 
     info "Start completed."

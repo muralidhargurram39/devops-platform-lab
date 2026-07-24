@@ -11,9 +11,9 @@ platform_stop() {
     info "Stopping ${service}..."
 
     if [[ "$service" == "all" ]]; then
-        compose_stop_all
+        compose_stop
     else
-        compose_stop_service "$service"
+        compose_stop "$service"
     fi
 
     info "Stop completed."

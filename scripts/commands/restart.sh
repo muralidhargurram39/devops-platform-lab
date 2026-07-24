@@ -11,9 +11,9 @@ platform_restart() {
     info "Restarting ${service}..."
 
     if [[ "$service" == "all" ]]; then
-        compose_restart_all
+        compose_restart
     else
-        compose_restart_service "$service"
+        compose_restart "$service"
     fi
 
     info "Restart completed."
