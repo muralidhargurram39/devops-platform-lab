@@ -1,29 +1,4 @@
-# Runtime data
-**/logs/
-**/data/
-**/work/
-**/tmp/
-
-# Docker volumes
-jenkins_home/
-nexus-data/
-sonarqube_data/
-sonarqube_extensions/
-sonarqube_logs/
-postgres_data/
-
-# IDE
-.vscode/
-.idea/
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Environment
-.env
-
-# Runtime
+# Runtime artifacts
 backups/
 Backups/
 logs/
@@ -32,5 +7,12 @@ tmp/
 # Environment
 .env
 
-# macOS/Linux
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+
+# OS
 .DS_Store
