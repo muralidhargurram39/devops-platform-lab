@@ -105,6 +105,10 @@ Initialize the workspace:
 ./scripts/platform setup
 ```
 
+```bash
+./scripts/platform deploy
+```
+
 ## Quick Start
 
 Start the platform:

@@ -14,6 +14,7 @@ platform_help() {
     ui_section "Workspace"
 
     printf "  %-24s %s\n" "setup"             "Initialize the platform"
+    printf "  %-24s %s\n" "Deploy"             "Create containers (docker compose up -d)"
     printf "  %-24s %s\n" "wake"              "Wake the development workspace"
     printf "  %-24s %s\n" "sleep"             "Put the workspace into sleep mode"
     echo

@@ -9,7 +9,13 @@ compose_project_exists() {
 }
 
 compose_up() {
-    docker compose up -d
+    local service="${1:-}"
+
+    if [[ -n "$service" ]]; then
+        docker compose up -d "$service"
+    else
+        docker compose up -d
+    fi
 }
 
 compose_start() {

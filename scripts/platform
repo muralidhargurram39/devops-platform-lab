@@ -24,6 +24,7 @@ case "$COMMAND" in
     cleanup)   platform_cleanup "$@" ;;
     config)    platform_config "$@" ;;
     setup)     platform_setup "$@" ;;
+    deploy)    platform_deploy "$@" ;;
     wake)      platform_wake "$@" ;;
     sleep)     platform_sleep "$@" ;;
     version)   platform_version "$@" ;;
