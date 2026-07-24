@@ -29,6 +29,9 @@ case "${COMMAND}" in
 	;;
     status)
        platform_status
+       ;;
+    health)
+       platform_health
        ;; 
     setup)
        platform_setup

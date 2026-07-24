@@ -52,3 +52,16 @@ ui_summary() {
     printf "%-22s %s\n" "Stopped Containers :" "$stopped"
     echo
 }
+
+ui_health_header() {
+
+    printf "%-22s %-12s\n" "COMPONENT" "STATUS"
+    printf "%-22s %-12s\n" "---------" "------"
+
+}
+
+ui_health_row() {
+
+    printf "%-22s %-12s\n" "$1" "$2"
+
+}

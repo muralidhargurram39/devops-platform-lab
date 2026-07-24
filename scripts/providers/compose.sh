@@ -103,3 +103,60 @@ compose_stopped_count() {
 
 }
 
+compose_service_state() {
+
+    local service="$1"
+
+    compose_ps |
+    jq -r \
+        --arg service "$service" \
+        '
+        select(.Service == $service)
+        | .State
+        '
+
+}
+
+compose_service_health() {
+
+    local service="$1"
+
+    local health
+
+    health=$(
+        compose_ps |
+        jq -r \
+            --arg service "$service" \
+            '
+            select(.Service == $service)
+            | .Health
+            '
+    )
+
+    if [[ -z "$health" || "$health" == "null" ]]; then
+        echo "-"
+    else
+        echo "$health"
+    fi
+
+}
+
+normalize_health_status() {
+
+    local status="$1"
+
+    case "$status" in
+        running|healthy)
+            echo "Healthy"
+            ;;
+        starting)
+            echo "Starting"
+            ;;
+        exited|dead|unhealthy)
+            echo "Unhealthy"
+            ;;
+        *)
+            echo "Unknown"
+            ;;
+    esac
+}
