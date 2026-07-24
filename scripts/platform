@@ -23,6 +23,9 @@ case "${COMMAND}" in
     wake)
        platform_wake
        ;;
+    sleep)
+       platform_sleep
+       ;;
 
     *)
         error "Unknown command: ${COMMAND}"

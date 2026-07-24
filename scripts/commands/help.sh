@@ -13,6 +13,7 @@ Commands
 
     setup
     wake
+    sleep
     version
     help
         
