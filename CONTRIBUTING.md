@@ -56,9 +56,9 @@ Recommended:
 Clone the repository.
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/muralidhargurram39/devops-platform-lab.git
 
-cd devops-lab-platform
+cd devops-platform-lab
 ```
 
 Initialize the platform.
