@@ -1,12 +1,20 @@
 #!/usr/bin/env bash
 
 platform_deploy() {
-    require_docker
-    require_compose
 
-    log_info "Deploying platform..."
+    platform_validate
 
-    compose_up "$@"
+    local service="${1:-all}"
 
-    log_success "Platform deployed successfully."
+    require_service "$service"
+
+    info "Deploying ${service}..."
+
+    if [[ "$service" == "all" ]]; then
+        compose_up
+    else
+        compose_up "$service"
+    fi
+
+    info "Deployment completed."
 }
