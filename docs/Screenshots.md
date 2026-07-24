@@ -79,7 +79,7 @@ Example:
 platform help
 ```
 
-*(Add screenshot: `images/platform-help.png`)*
+![Help](../images/platform-help.png)
 
 ---
 
@@ -95,9 +95,7 @@ platform doctor
 
 Recommended screenshot:
 
-```
-images/platform-doctor.png
-```
+![Doctor](../images/platform-doctor.png)
 
 ---
 
@@ -113,9 +111,9 @@ platform status
 
 Recommended screenshot:
 
-```
-images/platform-status.png
-```
+
+![Status](../images/platform-status.png)
+
 
 ---
 
@@ -131,9 +129,7 @@ platform backup
 
 Recommended screenshot:
 
-```
-images/platform-backup.png
-```
+![Backup](../images/platform-backup.png)
 
 The screenshot should demonstrate:
 
@@ -155,9 +151,9 @@ platform restore
 
 Recommended screenshot:
 
-```
-images/platform-restore.png
-```
+
+![Restore](../images/platform-restore.png)
+
 
 The screenshot should highlight:
 
