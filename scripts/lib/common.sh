@@ -18,3 +18,20 @@ require_service() {
 
     die "Unknown service: ${service}"
 }
+
+service_exists() {
+
+    local service="$1"
+
+    for entry in "${SERVICES[@]}"
+    do
+        IFS='|' read -r name docker_service url http_enabled <<< "$entry"
+
+        if [[ "$docker_service" == "$service" ]]
+        then
+            return 0
+        fi
+    done
+
+    return 1
+}

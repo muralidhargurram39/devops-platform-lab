@@ -7,47 +7,31 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/lib/bootstrap.sh"
 
 COMMAND="${1:-help}"
-ARG="${2:-all}"
+shift || true
 
-case "${COMMAND}" in
-
-    version)
-        platform_version
-        ;;
-
-    help)
-        platform_help
-        ;;
-    start)
-        platform_start "$ARG"
-	;;
-    stop)
-       platform_stop "$ARG"
-       ;;
-    restart)
-        platform_restart "$ARG"
-	;;
-    status)
-       platform_status
-       ;;
-    health)
-       platform_health
-       ;; 
-    setup)
-       platform_setup
-       ;;
-    wake)
-       platform_wake
-       ;;
-    sleep)
-       platform_sleep
-       ;;
-
+case "$COMMAND" in
+    start)     platform_start "$@" ;;
+    stop)      platform_stop "$@" ;;
+    restart)   platform_restart "$@" ;;
+    status)    platform_status "$@" ;;
+    health)    platform_health "$@" ;;
+    logs)      platform_logs "$@" ;;
+    shell)     platform_shell "$@" ;;
+    exec)      platform_exec "$@" ;;
+    doctor)    platform_doctor "$@" ;;
+    backup)    platform_backup "$@" ;;
+    restore)   platform_restore "$@" ;;
+    cleanup)   platform_cleanup "$@" ;;
+    config)    platform_config "$@" ;;
+    setup)     platform_setup "$@" ;;
+    wake)      platform_wake "$@" ;;
+    sleep)     platform_sleep "$@" ;;
+    version)   platform_version "$@" ;;
+    help)      platform_help "$@" ;;
     *)
         error "Unknown command: ${COMMAND}"
         echo
         platform_help
         exit 1
         ;;
-
 esac

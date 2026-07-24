@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
 
+log() {
+    local level="$1"
+    shift
+    echo "[${level}] $*"
+}
+
 info() {
-    echo "[INFO] $*"
+    log INFO "$@"
 }
 
 warn() {
-    echo "[WARN] $*"
+    log WARN "$@"
 }
 
 error() {
-    echo "[ERROR] $*" >&2
+    log ERROR "$@" >&2
 }
 
-log_info() {
-    echo "[INFO] $1"
+success() {
+    log SUCCESS "$@"
 }
 
 die() {

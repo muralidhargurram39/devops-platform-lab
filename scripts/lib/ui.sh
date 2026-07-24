@@ -65,3 +65,11 @@ ui_health_row() {
     printf "%-22s %-12s\n" "$1" "$2"
 
 }
+
+ui_key_value() {
+
+    local key="$1"
+    local value="$2"
+
+    printf "%-15s : %s\n" "$key" "$value"
+}
