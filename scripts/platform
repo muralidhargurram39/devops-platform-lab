@@ -1,158 +1,27 @@
 #!/usr/bin/env bash
 
-###############################################################################
-# DevOps Lab Platform CLI
-#
-# Main entry point for the DevOps Lab Platform.
-#
-# Responsibilities:
-#   - Load shared libraries
-#   - Parse command-line arguments
-#   - Dispatch commands
-#   - Display help
-#
-# This file MUST NOT contain platform business logic.
-###############################################################################
+set -euo pipefail
 
-set -Eeuo pipefail
-
-###############################################################################
-# Resolve Runtime Environment
-###############################################################################
-
-SCRIPT_DIR="$(
-    cd "$(dirname "${BASH_SOURCE[0]}")" &&
-    pwd
-)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 source "${SCRIPT_DIR}/lib/bootstrap.sh"
 
-###############################################################################
-# Display Help
-###############################################################################
-
-show_help() {
-
-cat <<EOF
-
-${CLI_NAME} v${CLI_VERSION}
-
-Usage:
-    platform <command> [options]
-
-Core Commands
-    start       Start platform
-    stop        Stop platform
-    restart     Restart platform
-    status      Show platform status
-
-Operations
-    health      Perform health checks
-    doctor      Diagnose platform issues
-    logs        View platform logs
-    metrics     View platform resource metrics
-    urls        Display service URLs
-
-
-
-General
-    help        Show this help
-
-Examples
-
-    platform health
-    platform doctor
-    platform logs
-    platform logs jenkins
-    platform logs --tail 100
-    platform metrics
-    platform metrics jenkins
-    platform urls
-    platform restart jenkins
-    platform restart sonarqube
-    platform restart nexus
-    platform restart all
-
-EOF
-
-}
-
-###############################################################################
-# Dispatcher
-###############################################################################
-
 COMMAND="${1:-help}"
 
-shift || true
+case "${COMMAND}" in
 
-case "$COMMAND" in
-
-    start)
-
-        command_start "$@"
+    version)
+        platform_version
         ;;
 
-    stop)
-
-        command_stop "$@"
-        ;;
-
-    restart)
-
-        command_restart "$@"
-        ;;
-
-    status)
-
-        command_status "$@"
-        ;;
-
-    health)
-
-        command_health "$@"
-        ;;
-
-    doctor)
-
-        command_doctor "$@"
-        ;;
-
-    urls)
-
-        command_urls "$@"
-        ;;
-
-    logs)
-
-        command_logs "$@"
-        ;;
-
-    metrics)
-
-        command_metrics "$@"
-        ;;
-    backup)
-    	
-    	command_backup "$@"
-    	;;
-   restore)
-
-       command_restore "$@"
-       ;;
-
-    help|-h|--help)
-
-        show_help
+    help)
+        platform_help
         ;;
 
     *)
-
-        log_error "Unknown command: $COMMAND"
-
+        error "Unknown command: ${COMMAND}"
         echo
-
-        show_help
-
+        platform_help
         exit 1
         ;;
 

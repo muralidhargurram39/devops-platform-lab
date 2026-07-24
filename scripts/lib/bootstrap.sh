@@ -1,87 +1,11 @@
 #!/usr/bin/env bash
 
-###############################################################################
-# Source Guard
-###############################################################################
+set -euo pipefail
 
-[[ -n "${DEVOPS_BOOTSTRAP_LOADED:-}" ]] && return 0
-readonly DEVOPS_BOOTSTRAP_LOADED=1
+PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 
-###############################################################################
-# Bootstrap Paths
-###############################################################################
+source "${PROJECT_ROOT}/scripts/lib/common.sh"
+source "${PROJECT_ROOT}/scripts/lib/logger.sh"
 
-BOOTSTRAP_DIR="$(
-    cd "$(dirname "${BASH_SOURCE[0]}")" &&
-    pwd
-)"
-
-LIB_DIR="$BOOTSTRAP_DIR"
-SCRIPT_DIR="$(dirname "$BOOTSTRAP_DIR")"
-
-###############################################################################
-# Initialize Environment
-###############################################################################
-
-source "${LIB_DIR}/environment.sh"
-
-init_environment
-
-###############################################################################
-# Load Core Libraries
-###############################################################################
-
-source "${LIB_DIR}/config.sh"
-source "${LIB_DIR}/colors.sh"
-source "${LIB_DIR}/constants.sh"
-source "${LIB_DIR}/logger.sh"
-source "${LIB_DIR}/common.sh"
-source "${LIB_DIR}/ui.sh"
-source "${LIB_DIR}/menu.sh"
-source "${LIB_DIR}/inventory.sh"
-source "${PROVIDERS_DIR}/docker_volume_restore.sh"
-source "${PROVIDERS_DIR}/compose.sh"
-###############################################################################
-# Load SDK Libraries
-###############################################################################
-
-source "${LIB_DIR}/services.sh"
-source "${LIB_DIR}/docker.sh"
-source "${LIB_DIR}/compose.sh"
-source "${LIB_DIR}/network.sh"
-source "${LIB_DIR}/validation.sh"
-
-###############################################################################
-# Load Framework Libraries
-###############################################################################
-
-source "${LIB_DIR}/diagnostics.sh"
-
-###############################################################################
-# Load Engines
-###############################################################################
-
-source "${LIB_DIR}/health.sh"
-source "${LIB_DIR}/doctor.sh"
-source "${LIB_DIR}/logs.sh"
-source "$LIB_DIR/metrics.sh"
-source "$LIB_DIR/lifecycle.sh"
-source "$LIB_DIR/snapshot.sh"
-source "$LIB_DIR/backup.sh"
-source "${LIB_DIR}/docker_provider.sh"
-source "${LIB_DIR}/restore.sh"
-
-###############################################################################
-# Load Platform API
-###############################################################################
-
-source "${LIB_DIR}/status.sh"
-source "${LIB_DIR}/platform.sh"
-
-###############################################################################
-# Load Commands
-###############################################################################
-
-for file in "${COMMANDS_DIR}"/*.sh; do
-    source "$file"
-done
+source "${PROJECT_ROOT}/scripts/commands/version.sh"
+source "${PROJECT_ROOT}/scripts/commands/help.sh"
