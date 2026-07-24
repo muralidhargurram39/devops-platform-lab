@@ -106,7 +106,7 @@ Initialize the workspace:
 ```
 
 ```bash
-./scripts/platform deploy
+./scripts/platform deploy --build
 ```
 
 ## Quick Start
