@@ -4,16 +4,37 @@ platform_deploy() {
 
     platform_validate
 
-    local service="${1:-all}"
+    local build=false
+    local service="all"
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --build)
+                build=true
+                ;;
+            *)
+                service="$1"
+                ;;
+        esac
+        shift
+    done
 
     require_service "$service"
 
     info "Deploying ${service}..."
 
-    if [[ "$service" == "all" ]]; then
-        compose_up
+    if [[ "$build" == true ]]; then
+        if [[ "$service" == "all" ]]; then
+            compose_up_build
+        else
+            compose_up_build "$service"
+        fi
     else
-        compose_up "$service"
+        if [[ "$service" == "all" ]]; then
+            compose_up
+        else
+            compose_up "$service"
+        fi
     fi
 
     info "Deployment completed."

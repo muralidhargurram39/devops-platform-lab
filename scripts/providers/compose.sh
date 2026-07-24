@@ -18,6 +18,17 @@ compose_up() {
     fi
 }
 
+compose_up_build() {
+
+    local service="${1:-}"
+
+    if [[ -n "$service" ]]; then
+        docker compose up -d --build "$service"
+    else
+        docker compose up -d --build
+    fi
+}
+
 compose_start() {
 
     local service="${1:-}"
